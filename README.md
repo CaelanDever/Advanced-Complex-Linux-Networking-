@@ -13,26 +13,13 @@ To assign VLAN ID 10 to the ens192 interface, create a VLAN sub-interface using 
 
 ip link add link ens192 name ens192.10 type vlan id 10
 
+<img width="297" alt="3" src="https://github.com/user-attachments/assets/ecf4e58d-96eb-4721-89b6-fffb6aec1395">
+
 1.2 Configure IP Address for VLAN Interface
 
 Assign an IP address to the VLAN interface ens192.10:
 
 ip addr add 10.0.0.98/24 dev ens192.10
-
-1.3 Persist Configuration (Optional)
-
-To make these configurations persistent across reboots, create a configuration file /etc/sysconfig/network-scripts/ifcfg-ens192.10 and add the following content:
-
-DEVICE=ens192.10
-BOOTPROTO=static
-ONBOOT=yes
-IPADDR=10.0.0.98
-PREFIX=24
-VLAN=yes
-
-Then, restart the network service:
-
-systemctl restart network
 
 # 2. Set Up Bonding/Teaming
 
@@ -46,6 +33,9 @@ BONDING_MASTER=yes
 BOOTPROTO=none
 ONBOOT=yes
 BONDING_OPTS="mode=1 miimon=100"
+
+<img width="148" alt="2" src="https://github.com/user-attachments/assets/fc0b8e55-aec9-421c-b071-208f67d6090b">
+
 
 2.2 Configure Slave Interface (ens192)
 
@@ -61,11 +51,18 @@ ONBOOT=yes
 MASTER=bond0
 SLAVE=yes
 
+<img width="143" alt="23" src="https://github.com/user-attachments/assets/f7965b2b-d2b6-4cb2-bdc5-23e4339aa7a5">
+
+
 2.3 Restart the Network
 
 Once configured, restart the network service:
 
 systemctl restart network
+
+
+<img width="292" alt="44" src="https://github.com/user-attachments/assets/8a480734-9210-4f25-a54d-308d477aa268">
+
 
 # 3. Implement IP Routing
 
@@ -79,9 +76,15 @@ Uncomment or add the following line:
 
 net.ipv4.ip_forward = 1
 
+<img width="286" alt="dd" src="https://github.com/user-attachments/assets/b96786f6-4473-4401-898d-3036ce7e0135">
+
+
 Apply the changes:
 
 sysctl -p
+
+<img width="185" alt="444" src="https://github.com/user-attachments/assets/8d1ec28c-5cab-41d3-9098-09bb3b7ebe7e">
+
 
 3.2 Add Static Route
 
@@ -92,6 +95,8 @@ ip route add 10.0.0.0/24 via 10.0.0.1
 To make the route persistent, edit the /etc/sysconfig/network-scripts/route-ens192 file:
 
 10.0.0.0/24 via 10.0.0.1 dev ens192
+
+<img width="163" alt="w2" src="https://github.com/user-attachments/assets/864db767-4d68-42b8-83a9-ff043418e3d3">
 
 Restart the network:
 
@@ -104,9 +109,14 @@ Edit the /etc/sysctl.conf file:
 
 net.ipv4.ip_forward = 1
 
+<img width="290" alt="cc" src="https://github.com/user-attachments/assets/ed91e306-f41f-47e9-8d65-54e6587d0dd0">
+
 Apply the changes:
 
 sysctl -p
+
+<img width="179" alt="scs" src="https://github.com/user-attachments/assets/dd5de33c-7e68-494d-a7fb-01fa8792821c">
+
 
 4.2 Configure NAT Using iptables
 
@@ -118,7 +128,13 @@ To make this rule persistent across reboots, install iptables-services if not al
 
 yum install -y iptables-services
 
+<img width="229" alt="ipas" src="https://github.com/user-attachments/assets/5d34d9f8-144c-40a8-aa0e-6dab5d1c72b0">
+
+
 service iptables save
+
+<img width="270" alt="dsas" src="https://github.com/user-attachments/assets/f9aeb6b6-e590-4b65-a011-d78ed26ae757">
+
 
 # 5. Implement Quality of Service (QoS)
 
@@ -134,6 +150,10 @@ tc qdisc add dev ens192 root handle 1: htb default 12
 tc class add dev ens192 parent 1: classid 1:1 htb rate 1000mbit
 
 To make these rules persistent, you may need to add them to a script and execute it at startup.
+
+
+<img width="343" alt="swd" src="https://github.com/user-attachments/assets/46a18014-c639-460b-be7a-5daeb6c9205b">
+
 
 # 6. Set Up VPN (Virtual Private Network)
 
@@ -164,6 +184,8 @@ server 10.8.0.0 255.255.255.0
 
 push "route 10.0.0.0 255.255.255.0"
 
+<img width="175" alt="11" src="https://github.com/user-attachments/assets/13c27ebe-0fe4-4a2a-b79f-658c88ba4433">
+
 Start and enable OpenVPN:
 
 systemctl start openvpn@server
@@ -179,6 +201,9 @@ To open port 80/tcp in the firewall, use the following commands:
 firewall-cmd --zone=public --add-port=80/tcp --permanent
 firewall-cmd --reload
 
+<img width="361" alt="ccc" src="https://github.com/user-attachments/assets/256aaef8-2c1a-4258-8cd6-ece41cef2bef">
+
+
 # 8. Deploy Network Monitoring Tools
 
 8.1 Install Zabbix
@@ -190,6 +215,9 @@ yum install -y zabbix-server-mysql zabbix-web-mysql zabbix-agent
 8.2 Configure Zabbix
 
 Follow Zabbix setup guide to configure the Zabbix server, agent, and web interface.
+
+<img width="254" alt="qw" src="https://github.com/user-attachments/assets/3035e4ca-79dc-4191-9283-c8ecc1747468">
+
 
 # 9. Enable IPv6
 

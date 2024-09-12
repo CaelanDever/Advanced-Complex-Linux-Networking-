@@ -133,7 +133,8 @@ yum install -y iptables-services
 
 service iptables save
 
-<img width="270" alt="dsas" src="https://github.com/user-attachments/assets/f9aeb6b6-e590-4b65-a011-d78ed26ae757">
+
+<img width="264" alt="32" src="https://github.com/user-attachments/assets/26fb73a9-c0c9-45ad-8b5d-7823181334aa">
 
 
 # 5. Implement Quality of Service (QoS)
@@ -227,15 +228,24 @@ To configure an IPv6 address on ens192, use the following command:
 
 ip addr add 2001:0db8:85a3:0000:0000:8a2e:0370:7334/64 dev ens192
 
+<img width="361" alt="231" src="https://github.com/user-attachments/assets/50261513-a384-42a8-b20a-a43d38253856">
+
+
 9.2 Enable IPv6 Forwarding
 
 Edit /etc/sysctl.conf and enable IPv6 forwarding:
 
 net.ipv6.conf.all.forwarding = 1
 
+<img width="281" alt="dw" src="https://github.com/user-attachments/assets/e0b72e31-b4e4-4b86-820a-e87684900706">
+
+
 Apply the changes:
 
 sysctl -p
+
+<img width="171" alt="1234" src="https://github.com/user-attachments/assets/236ba96d-21d3-48b0-92ab-54c8630cf468">
+
 
 # 10. Implement Dynamic Host Configuration Protocol (DHCP)
 
@@ -260,10 +270,17 @@ subnet 10.0.0.0 netmask 255.255.255.0 {
   option subnet-mask 255.255.255.0;
   option broadcast-address 10.0.0.255;
 }
+
+<img width="212" alt="54" src="https://github.com/user-attachments/assets/2f0f939a-6e71-45c0-a706-9645f7fc9414">
+
+
 Start and enable the DHCP service:
 
 systemctl start dhcpd
 systemctl enable dhcpd
+
+<img width="333" alt="43" src="https://github.com/user-attachments/assets/1a61cf36-4f25-403a-9e74-382d98d30309">
+
 
 # Quick Summary
 
